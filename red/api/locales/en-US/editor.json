@@ -30,6 +30,7 @@
             "import": "Import",
             "export": "Export",
             "clipboard": "Clipboard",
+            "externalserver": "ToServer",
             "library": "Library",
             "examples": "Examples",
             "subflows": "Subflows",

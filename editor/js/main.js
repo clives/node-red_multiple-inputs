@@ -172,6 +172,7 @@ var RED = (function() {
                 ]},
                 {id:"menu-item-export",label:RED._("menu.label.export"),disabled:true,options:[
                     {id:"menu-item-export-clipboard",label:RED._("menu.label.clipboard"),disabled:true,onselect:RED.clipboard.export},
+                    {id:"menu-item-export-server",label:RED._("menu.label.externalserver"),disabled:true,onselect:RED.exportServer.export},
                     {id:"menu-item-export-library",label:RED._("menu.label.library"),disabled:true,onselect:RED.library.export}
                 ]},
                 null,
@@ -204,6 +205,7 @@ var RED = (function() {
         RED.subflow.init();
         RED.workspaces.init();
         RED.clipboard.init();
+        RED.exportServer.init();
         RED.view.init();
         RED.editor.init();
 

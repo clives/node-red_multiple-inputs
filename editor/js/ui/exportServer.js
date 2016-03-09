@@ -15,7 +15,7 @@
  **/
 
 
-RED.clipboard = (function() {
+RED.exportServer = (function() {
 
     var dialog;
     var dialogContainer;
@@ -111,6 +111,7 @@ RED.clipboard = (function() {
     }
 
     function exportNodes() {
+        console.log("exportNodes exportServer");
         dialogContainer.empty();
         dialogContainer.append($(exportNodesDialog));
         $("#clipboard-dialog-ok").hide();
