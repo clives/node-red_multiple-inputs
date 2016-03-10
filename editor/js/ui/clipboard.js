@@ -146,12 +146,12 @@ RED.clipboard = (function() {
                     RED.menu.setDisabled("menu-item-export",true);
                     RED.menu.setDisabled("menu-item-export-clipboard",true);
                     RED.menu.setDisabled("menu-item-export-library",true);
-                    RED.menu.setDisabled("menu-item-export-server",true);
+                    RED.menu.setDisabled("menu-item-export-db",true);
                 } else {
                     RED.menu.setDisabled("menu-item-export",false);
                     RED.menu.setDisabled("menu-item-export-clipboard",false);
                     RED.menu.setDisabled("menu-item-export-library",false);
-                    RED.menu.setDisabled("menu-item-export-server",false);
+                    RED.menu.setDisabled("menu-item-export-db",false);
                 }
             });
             RED.keyboard.add(/* e */ 69,{ctrl:true},function(){exportNodes();d3.event.preventDefault();});

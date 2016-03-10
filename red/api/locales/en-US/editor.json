@@ -30,7 +30,7 @@
             "import": "Import",
             "export": "Export",
             "clipboard": "Clipboard",
-            "externalserver": "ToServer",
+            "export_to_db": "To DB",
             "library": "Library",
             "examples": "Examples",
             "subflows": "Subflows",

@@ -15,7 +15,7 @@
  **/
 
 
-RED.exportServer = (function() {
+RED.export_to_db = (function() {
 
     var dialog;
     var dialogContainer;
