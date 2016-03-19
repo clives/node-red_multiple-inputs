@@ -1076,7 +1076,7 @@ RED.view = (function() {
         //console.log(d,portType,portIndex);
         // disable zoom
         //vis.call(d3.behavior.zoom().on("zoom"), null);
-        console.log("portMouseDown d:"+d);
+        console.log("portMouseDown d:"+d +",portIndex:"+portIndex);
         mousedown_node = d;
         selected_link = null;
         mouse_mode = RED.state.JOINING;
@@ -1087,6 +1087,7 @@ RED.view = (function() {
     }
 
     function portMouseUp(d,portType,portIndex) {
+        console.log("portMouseUp:, type:"+portType +",mouse_mode:"+mouse_mode );
         var i;
         document.body.style.cursor = "";
         if (mouse_mode == RED.state.JOINING && drag_lines.length > 0) {
@@ -1118,18 +1119,22 @@ RED.view = (function() {
                 if (portType != drag_lines[i].portType && mouseup_node !== drag_lines[i].node) {
                     var drag_line = drag_lines[i];
                     var src,dst,src_port;
+                    var target_port;
+
                     if (drag_line.portType === 0) {
                         src = drag_line.node;
                         src_port = drag_line.port;
+                        target_port = portIndex;
                         dst = mouseup_node;
                     } else if (drag_line.portType == 1) {
                         src = mouseup_node;
                         dst = drag_line.node;
+                        target_port = drag_line.port;
                         src_port = portIndex;
                     }
-                    var existingLink = RED.nodes.filterLinks({source:src,target:dst,sourcePort: src_port}).length !== 0;
+                    var existingLink = RED.nodes.filterLinks({source:src,target:dst,sourcePort: src_port, targetPort: target_port }).length !== 0;
                     if (!existingLink) {
-                        var link = {source: src, sourcePort:src_port, target: dst};
+                        var link = {source: src, sourcePort:src_port, target: dst , targetPort: target_port};
                         RED.nodes.addLink(link);
                         addedLinks.push(link);
                     }
@@ -1703,10 +1708,10 @@ RED.view = (function() {
                                 //var inputGroup = thisNode.append("g").attr("class","port_input");
 
                                 inputGroup.append("rect").attr("class","port").attr("rx",3).attr("ry",3).attr("width",10).attr("height",10)
-                                    .on("mousedown",(function(){var node = d; return function(d,i){ console.log("i:"+i);  portMouseDown(node,1,0);}}  )() )
-                                    .on("touchstart",(function(){var node = d; return function(d,i){  portMouseDown(node,1,0);}}  )() )
-                                    .on("mouseup",(function(){var node = d; return function(d,i){portMouseUp(node,1,0);}})() )
-                                    .on("touchend",(function(){var node = d; return function(d,i){portMouseUp(node,1,0);}})() )
+                                    .on("mousedown",(function(){var node = d; return function(d,i){ console.log("i:"+i);  portMouseDown(node,1,i);}}  )() )
+                                    .on("touchstart",(function(){var node = d; return function(d,i){  portMouseDown(node,1,i);}}  )() )
+                                    .on("mouseup",(function(){var node = d; return function(d,i){portMouseUp(node,1,i);}})() )
+                                    .on("touchend",(function(){var node = d; return function(d,i){portMouseUp(node,1,i);}})() )
                                     .on("mouseover",function(d) { var port = d3.select(this); port.classed("port_hovered",(mouse_mode!=RED.state.JOINING || (drag_lines.length > 0 && drag_lines[0].portType !== 1) ));})
                                     .on("mouseout",function(d) { var port = d3.select(this); port.classed("port_hovered",false);})
 
@@ -1953,8 +1958,13 @@ RED.view = (function() {
                 if (d.added || d===selected_link || d.selected || dirtyNodes[d.source.id] || dirtyNodes[d.target.id]) {
                     link.attr("d",function(d){
                         var numOutputs = d.source.outputs || 1;
+                        var numInputs = d.target.inputs || 1;
                         var sourcePort = d.sourcePort || 0;
+                        var targetPort = d.targetPort || 0;
+
                         var y = -((numOutputs-1)/2)*13 +13*sourcePort;
+
+                        var yInputs = -((numInputs-1)/2)*13 +13*targetPort;
 
                         var dy = d.target.y-(d.source.y+y);
                         var dx = (d.target.x-d.target.w/2)-(d.source.x+d.source.w/2);
@@ -1980,7 +1990,7 @@ RED.view = (function() {
                         return "M "+(d.source.x+d.source.w/2)+" "+(d.source.y+y)+
                             " C "+(d.source.x+d.source.w/2+scale*node_width)+" "+(d.source.y+y+scaleY*node_height)+" "+
                             (d.target.x-d.target.w/2-scale*node_width)+" "+(d.target.y-scaleY*node_height)+" "+
-                            (d.target.x-d.target.w/2)+" "+d.target.y;
+                            (d.target.x-d.target.w/2)+" "+(d.target.y+yInputs);
                     });
                 }
             })

@@ -945,6 +945,9 @@ RED.nodes = (function() {
             if (filter.hasOwnProperty("sourcePort") && link.sourcePort !== filter.sourcePort) {
                 continue;
             }
+            if (filter.hasOwnProperty("targetPort") && link.targetPort !== filter.targetPort) {
+                continue;
+            }
             result.push(link);
         }
         return result;
