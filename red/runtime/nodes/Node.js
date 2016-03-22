@@ -45,6 +45,11 @@ Node.prototype.updateWires = function(wires) {
     this.wires = wires || [];
     delete this._wire;
 
+
+
+    console.log("UpdateWires node: "+this.name )
+
+
     var wc = 0;
     this.wires.forEach(function(w) {
         wc+=w.length;
@@ -109,6 +114,9 @@ Node.prototype.send = function(msg) {
     var msgSent = false;
     var node;
 
+    //console.log(" send from node :"+this.name+", msg:"+JSON.stringify(msg));
+
+
     if (msg === null || typeof msg === "undefined") {
         return;
     } else if (!util.isArray(msg)) {
@@ -121,6 +129,12 @@ Node.prototype.send = function(msg) {
             }
             this.metric("send",msg);
             node = flows.get(this._wire);
+
+            if( node)
+            console.log("node name:"+this.name+" is going to send a msg to:"+node.name+", receive:"+JSON.stringify(msg))
+            else console.log("no destination node")
+
+
             /* istanbul ignore else */
             if (node) {
                 node.receive(msg);
@@ -186,6 +200,11 @@ Node.prototype.send = function(msg) {
         if (!ev.m._msgid) {
             ev.m._msgid = sentMessageId;
         }
+
+        console.log("Send the msg using sendEvents: nbrInputs: "+ ev.n.nbrInputs);
+
+
+
         ev.n.receive(ev.m);
     }
 };
@@ -199,6 +218,8 @@ Node.prototype.receive = function(msg) {
     }
     this.metric("receive",msg);
     try {
+        console.log("Emit: to:"+this.name+", type:"+this.type+", node type:"+this.constructor.name)
+
         this.emit("input", msg);
     } catch(err) {
         this.error(err,msg);

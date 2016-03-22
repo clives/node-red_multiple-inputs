@@ -56,6 +56,9 @@ function Flow(global,flow) {
             }
         }
 
+        console.log("Flow :  id: "+id)
+
+
         for (id in flow.nodes) {
             if (flow.nodes.hasOwnProperty(id)) {
                 node = flow.nodes[id];
@@ -83,6 +86,34 @@ function Flow(global,flow) {
                 }
             }
         }
+
+
+        var nbrinputs=0;
+
+        //we have all the nodes. check how many inputs valid
+        for( id in activeNodes ){
+          node = activeNodes[id];
+          nbrinputs=0;
+
+          for( idcheck in activeNodes ){
+            var possibleinput = activeNodes[idcheck];
+
+            for( idwires in possibleinput.wires ){
+
+              var nodedestination_id = possibleinput.wires[idwires];
+
+              console.log("idwires destination:"+nodedestination_id+", current:"+node.id)
+
+              if(  node.id == nodedestination_id ){
+                nbrinputs++;
+              }
+            }
+
+          }
+          console.log("nbr inputs:"+nbrinputs)
+          node.nbrInputs = nbrinputs;
+        }
+
 
         for (id in activeNodes) {
             if (activeNodes.hasOwnProperty(id)) {
