@@ -433,6 +433,19 @@ RED.nodes = (function() {
         if (n._def.category != "config") {
             node.x = n.x;
             node.y = n.y;
+
+            node.inputWires= [];
+            for(var i=0;i<n.inputs;i++) {
+                node.inputWires.push([]);
+            }
+            var inputwires = links.filter(function(d){return d.target === n;});//.sort(function(a, b){return a.targetPort-b.targetPort});
+            for (var j=0;j<inputwires.length;j++) {
+              console.log(" inputeswires:"+ inputwires[j].targetPort);
+              var w = inputwires[j];
+              node.inputWires[w.targetPort].push( w.source.id );
+
+            }
+
             node.wires = [];
             for(var i=0;i<n.outputs;i++) {
                 node.wires.push([]);
