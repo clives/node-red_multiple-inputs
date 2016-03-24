@@ -29,6 +29,9 @@ function Node(n) {
     this.z = n.z;
     this._closeCallbacks = [];
 
+    console.log("inputWires:"+n.inputWires)
+    this.inputWires = n.inputWires
+
     if (n.name) {
         this.name = n.name;
     }
@@ -201,7 +204,7 @@ Node.prototype.send = function(msg) {
             ev.m._msgid = sentMessageId;
         }
 
-        console.log("Send the msg using sendEvents: nbrInputs: "+ ev.n.nbrInputs);
+        console.log("Send the msg using sendEvents: nbrInputs: "+ ev.n.inputWires.length);
 
 
 
