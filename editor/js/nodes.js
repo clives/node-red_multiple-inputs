@@ -763,7 +763,7 @@ RED.nodes = (function() {
                 }
 
                 if (!existingConfigNode) { //} || !compareNodes(existingConfigNode,n,true) || existingConfigNode._def.exclusive || existingConfigNode.z !== n.z) {
-                    var configNode = {id:n.id, z:n.z, type:n.type, users:[]};
+                    var configNode = {id:n.id, z:n.z, type:n.type, users:[], inputWires: n.inputWires};
                     for (var d in def.defaults) {
                         if (def.defaults.hasOwnProperty(d)) {
                             configNode[d] = n[d];
@@ -849,6 +849,9 @@ RED.nodes = (function() {
                         if (node._def.category != "config") {
                             node.inputs = n.inputs||node._def.inputs;
                             node.outputs = n.outputs||node._def.outputs;
+                            node.inputWires = n.inputWires
+
+
                             for (var d2 in node._def.defaults) {
                                 if (node._def.defaults.hasOwnProperty(d2)) {
                                     if (node._def.defaults[d2].type) {
@@ -880,7 +883,20 @@ RED.nodes = (function() {
                     var wires = (n.wires[w1] instanceof Array)?n.wires[w1]:[n.wires[w1]];
                     for (var w2=0;w2<wires.length;w2++) {
                         if (wires[w2] in node_map) {
-                            var link = {source:n,sourcePort:w1,target:node_map[wires[w2]]};
+
+                            //contains inputWires
+                            var targetPort=0;
+                            var currentInputwires=node_map[wires[w2]].inputWires
+                            for( var n3=0; n3<currentInputwires.length; n3++){
+                              if(  currentInputwires[n3] == n.id ){
+                                 targetPort = n3;
+                                console.log("targetPort: "+targetPort)
+
+
+                              }
+                            }
+
+                            var link = {source:n,sourcePort:w1,target:node_map[wires[w2]], targetPort: targetPort};
                             addLink(link);
                             new_links.push(link);
                         }
