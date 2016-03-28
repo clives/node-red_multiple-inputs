@@ -1,6 +1,8 @@
 
 dev mode:  
-grunt dev
+>grunt dev
+you can use full debug (got to install node-debug)
+>node-debug red.js
 
 
 If you want to run the latest code from git, here's how to get started:
