@@ -30,6 +30,12 @@ function Node(n) {
     this._closeCallbacks = [];
 
     console.log("inputWires:"+n.inputWires)
+
+
+
+    var err = new Error();
+    console.log("For debug: Node creation from:"+ err.stack)
+
     this.inputWires = n.inputWires
 
     if (n.name) {
@@ -204,9 +210,10 @@ Node.prototype.send = function(msg) {
             ev.m._msgid = sentMessageId;
         }
 
-        console.log("Send the msg using sendEvents: nbrInputs: "+ ev.n.inputWires.length);
+        console.log("Send the msg using sendEvents: nbrInputs: "+ ev.n.inputWires.length+", inject idSender to the msg");
 
-
+        //autofx
+        ev.m.idSender=this.id;
 
         ev.n.receive(ev.m);
     }
@@ -223,7 +230,37 @@ Node.prototype.receive = function(msg) {
     try {
         console.log("Emit: to:"+this.name+", type:"+this.type+", node type:"+this.constructor.name)
 
-        this.emit("input", msg);
+        var nbrInputs = this.inputWires.length
+        console.log("Nbr inputs:"+ nbrInputs);
+
+        if( nbrInputs > 1 ){
+
+          //autofx
+          console.log("activeNodes:"+this.activeNodes)
+          var arrayLength = this.inputWires.length;
+          var inputIndex=-1;
+          for (var i = 0; i < arrayLength; i++) {
+              if( this.inputWires[i][0]==msg.idSender ){
+                inputIndex = i;
+              }
+          }
+          console.log("new input from wires nbr:"+inputIndex);
+
+          this.inputValues[ inputIndex ] = msg;
+
+          console.log("current inputs for the node:"+ JSON.stringify( this.inputValues ));
+
+          for (var i = 0; i < arrayLength; i++) {
+              if( this.inputValues[i] == undefined ){
+                console.log( "inputValues incomplet for inputs:"+i)
+              }
+          }
+
+          this.emit( "input",  msg );
+        }
+
+        if( nbrInputs <=1 )
+          this.emit("input", msg);
     } catch(err) {
         this.error(err,msg);
     }

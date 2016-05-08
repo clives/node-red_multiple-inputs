@@ -62,10 +62,30 @@ function Flow(global,flow) {
         for (id in flow.nodes) {
             if (flow.nodes.hasOwnProperty(id)) {
                 node = flow.nodes[id];
+
+                //autofx
+                //node.activeNodes = activeNodes;
+
                 if (!node.subflow) {
                     if (!activeNodes[id]) {
                         newNode = createNode(node.type,node);
                         if (newNode) {
+
+                            console.log("full Node info:"+JSON.stringify(newNode))
+
+                            //autofx
+                            newNode.activeNodes = activeNodes;
+
+                            var arrayLength = newNode.inputWires.length;
+
+                            if( arrayLength > 0 ){
+                              var inputIndex=-1;
+                              newNode.inputValues = [];
+                              for (var i = 0; i < arrayLength; i++) {
+                                  newNode.inputValues[i] = undefined
+                              }
+                            }
+
                             activeNodes[id] = newNode;
                         }
                     }
@@ -88,9 +108,24 @@ function Flow(global,flow) {
         }
 
 
+
+        console.log("Nodes created: "  )
+
+        for (var key in activeNodes) {
+          if (activeNodes.hasOwnProperty(key)) {
+            var element= activeNodes[key];
+
+            console.log("activeNodes." + key + " = " + element.id + ", type:"+element.type )
+
+
+          }
+        }
+
+
         var nbrinputs=0;
 
         //we have all the nodes. check how many inputs valid
+       /* not needed anymore as we have inputWires
         for( id in activeNodes ){
           node = activeNodes[id];
           nbrinputs=0;
@@ -112,7 +147,7 @@ function Flow(global,flow) {
           }
           console.log("nbr inputs:"+nbrinputs)
           node.nbrInputs = nbrinputs;
-        }
+        }*/
 
 
         for (id in activeNodes) {
