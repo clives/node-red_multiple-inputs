@@ -32,6 +32,9 @@ var app = express();
 var settingsFile;
 var flowFile;
 
+
+console.log("Path:"+JSON.stringify(path))
+
 var knownOpts = {
     "settings":[path],
     "userDir":[path],
@@ -51,6 +54,8 @@ nopt.invalidHandler = function(k,v,t) {
 
 var parsedArgs = nopt(knownOpts,shortHands,process.argv,2)
 
+console.log("parsedArgs:"+parsedArgs.settings)
+
 if (parsedArgs.help) {
     console.log("Node-RED v"+RED.version());
     console.log("Usage: node-red [-v] [-?] [--settings settings.js] [--userDir DIR]");
@@ -66,6 +71,7 @@ if (parsedArgs.help) {
     console.log("Documentation can be found at http://nodered.org");
     process.exit();
 }
+
 if (parsedArgs.argv.remain.length > 0) {
     flowFile = parsedArgs.argv.remain[0];
 }
@@ -165,6 +171,9 @@ if (flowFile) {
 }
 if (parsedArgs.userDir) {
     settings.userDir = parsedArgs.userDir;
+} else{
+    //option -u not available using grunt dev
+    settings.userDir = "/home/sosthene/workspace/marketview/node-red-fxexperiment"
 }
 
 try {
