@@ -248,18 +248,37 @@ Node.prototype.receive = function(msg) {
 
           this.inputValues[ inputIndex ] = msg;
 
+
+          console.log("current msg:"+ JSON.stringify( msg ))
           console.log("current inputs for the node:"+ JSON.stringify( this.inputValues ));
 
           var inputsReady=true;
+          var newMsg = {}; //new msg, use name of the inputs node to assign fields name
+          newMsg.payload = {};
+          newMsg.topic="";
+          newMsg._msgid = msg._msgi;
+          newMsg._idSender = msg._idSender;
+
+          /*
+          msg:{"topic":"","payload":"Mon May 09 2016 13:46:09 GMT-0300 (ART)","_msgid":"461386f5.b9ec78","idSender":"acf57129.530a9"}
+          */
+
+
           for (var i = 0; i < arrayLength && inputsReady; i++) {
               if( this.inputValues[i] == undefined ){
                 console.log( "inputValues incomplet for inputs:"+i)
                 inputsReady=false;
+              }else{
+                console.log(" Input node type:"+this.activeNodes[ this.inputWires[i][0]].type)
+                console.log(" Input node name:"+this.activeNodes[ this.inputWires[i][0]].name)
+
+                newMsg.payload[this.activeNodes[ this.inputWires[i][0]].name ] =  msg.payload
               }
           }
 
           if( inputsReady ){
-            this.emit( "input",  msg );
+            console.log("About to send newMsg");
+            this.emit( "input",  newMsg );
           }else{
             console.log("missing an input");
           }
