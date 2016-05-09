@@ -1,16 +1,22 @@
 <script type="text/javascript">
+
+
+    function ws_oneditsave() {
+        $("#node-input-client").append('<option value="">Dummy</option>');
+        $("#node-input-client").val('');
+    }
+
+
     RED.nodes.registerType('MarketData',{
         category: 'input',
         color: '#a6bbcf',
         defaults: {
+            path: {value:"wss://echo.websocket.org",required:true,validate:RED.validators.regex(/^((?!\/debug\/ws).)*$/) },
             name: {value:""}
         },
         inputs:0,
         outputs:1,
         icon: "file.png",
-        label: function() {
-            return this.name||"MarketData";
-        },
       button: {
             onclick: function() {
                 var label = (this.name||this.payload).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
@@ -36,15 +42,44 @@
                     }
                 });
             }
+        },
+        label: function() {
+            var root = "MarketData"+RED.settings.httpNodeRoot;
+            if (root.slice(-1) != "/") {
+                root = root+"/";
+            }
+            if (this.path.charAt(0) == "/") {
+                root += this.path.slice(1);
+            } else {
+                root += this.path;
+            }
+            return root;
+        },
+        oneditsave: ws_oneditsave,
+        oneditprepare: function() {
+            var root = RED.settings.httpNodeRoot;
+            if (root.slice(-1) == "/") {
+                root = root.slice(0,-1);
+            }
+            if (root == "") {
+                $("#node-config-ws-tip").hide();
+            } else {
+                $("#node-config-ws-path").html(root);
+                $("#node-config-ws-tip").show();
+            }
         }
     });
 </script>
 
 <script type="text/x-red" data-template-name="MarketData">
-    <div class="form-row">
-        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
+
     </div>
+    <div class="form-row" id="websocket-client-row">
+        <label for="node-input-path"><i class="fa fa-bookmark"></i> <span data-i18n="websocket.label.url"></span></label>
+        <input type="text" id="node-input-path">
+    </div>
+
+
 </script>
 
 <script type="text/x-red" data-help-name="MarketData">
