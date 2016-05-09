@@ -250,13 +250,21 @@ Node.prototype.receive = function(msg) {
 
           console.log("current inputs for the node:"+ JSON.stringify( this.inputValues ));
 
-          for (var i = 0; i < arrayLength; i++) {
+          var inputsReady=true;
+          for (var i = 0; i < arrayLength && inputsReady; i++) {
               if( this.inputValues[i] == undefined ){
                 console.log( "inputValues incomplet for inputs:"+i)
+                inputsReady=false;
               }
           }
 
-          this.emit( "input",  msg );
+          if( inputsReady ){
+            this.emit( "input",  msg );
+          }else{
+            console.log("missing an input");
+          }
+
+
         }
 
         if( nbrInputs <=1 )
