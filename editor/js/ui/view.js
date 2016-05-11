@@ -1649,6 +1649,13 @@ RED.view = (function() {
             });
 
             node.each(function(d,i) {
+
+                    //issue missing refrresh nbr of inputs
+                    if( d.dirty  && d.type == "function" && d.name == "function_Name_002"){
+                      console.log("refresh, d.dirty:"+JSON.stringify(d));
+                    }
+
+
                     if (d.dirty) {
                         dirtyNodes[d.id] = d;
                         //if (d.x < -50) deleteSelection();  // Delete nodes if dragged back to palette
@@ -1690,8 +1697,8 @@ RED.view = (function() {
                             if (d.inputs === 0 && !inputPorts.empty()) {
                                 inputPorts.remove();
                                 //nodeLabel.attr("x",30);
-                            } else if (d.inputs > 0 && inputPorts.empty()) {
-
+                            } else if (d.inputs > 0 ) {  //now we refresh view.
+                                console.log("we have more than one inputs to draw, nbr:"+d.inputs)
 
                                 var numInputs = d.inputs;
                                 var y = (d.h/2)-((numInputs-1)/2)*13;
@@ -1714,6 +1721,9 @@ RED.view = (function() {
                                     .on("touchend",(function(){var node = d; return function(d,i){portMouseUp(node,1,i);}})() )
                                     .on("mouseover",function(d) { var port = d3.select(this); port.classed("port_hovered",(mouse_mode!=RED.state.JOINING || (drag_lines.length > 0 && drag_lines[0].portType !== 1) ));})
                                     .on("mouseout",function(d) { var port = d3.select(this); port.classed("port_hovered",false);})
+
+                                //refresh the input visual
+                                d._inports.exit().remove();
 
                                 y = (d.h/2)-((numInputs-1)/2)*13;
                                 var x = - 5;
