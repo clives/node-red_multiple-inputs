@@ -31,6 +31,13 @@
         <label for="node-input-outputs"><i class="fa fa-random"></i> <span data-i18n="function.label.outputs"></span></label>
         <input id="node-input-outputs" style="width: 60px;" value="1">
     </div>
+
+    <div class="form-row">
+        <label for="node-input-inputs"><i class="fa fa-random"></i> <span data-i18n="function.label.inputs"></span></label>
+        <input id="node-input-inputs" style="width: 60px;" value="1">
+    </div>
+
+
     <div class="form-tips"><span data-i18n="function.tip"></span></div>
 </script>
 
@@ -74,6 +81,7 @@
             name: {value:""},
             func: {value:"\nreturn msg;"},
             outputs: {value:1},
+            inputs: {value:1},
             noerr: {value:0,required:true,validate:function(v){ return ((!v) || (v === 0)) ? true : false; }}
         },
         inputs:1,
@@ -85,6 +93,10 @@
         oneditprepare: function() {
             var that = this;
             $( "#node-input-outputs" ).spinner({
+                min:1
+            });
+
+            $( "#node-input-inputs" ).spinner({
                 min:1
             });
 
