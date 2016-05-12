@@ -1,0 +1,25 @@
+<!--
+component used to reset all the multi inputs components
+-->
+<script type="text/javascript">
+    RED.nodes.registerType('syncMultiInputs',{
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:"SyncMultiInputs"}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "file.png",
+        label: function() {
+            return this.name||"syncMultiInputs";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="syncMultiInputs">
+</script>
+
+<script type="text/x-red" data-help-name="syncMultiInputs">
+    <p>component used to reset all the multi inputs components</p>
+</script>
