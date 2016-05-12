@@ -71,7 +71,7 @@ function Flow(global,flow) {
                         newNode = createNode(node.type,node);
                         if (newNode) {
 
-                            console.log("full Node info:"+JSON.stringify(newNode))
+                            console.log("full Node name:"+newNode.name)
 
                             //autofx
                             newNode.activeNodes = activeNodes;
