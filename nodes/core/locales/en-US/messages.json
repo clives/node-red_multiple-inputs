@@ -130,7 +130,8 @@
     "function": {
         "label": {
             "function": "Function",
-            "outputs": "Outputs"
+            "outputs": "Outputs",
+            "inputs": "Inputs"
         },
         "tip": "See the Info tab for help writing functions."
     },
