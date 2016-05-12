@@ -1,46 +1,33 @@
+## Node-red with multiple inputs
 
-url: http://127.0.0.1:1880/
-
-**to use it with Nodeclipse (Enide):**
-npm install -g nodeclipse
-nodeclipse -p
-
-dev mode:
->grunt dev
-you can use full debug (got to install node-debug)
->node-debug red.js
-
-
-### Node
-
-new fields:
-activeNodes  : object, contains a field for each nodes { idNode1 : value, idNode2 : value , ....}
-
-inputValues:  array , contains actual value at the input ( only available when nbrInputs > 0)
-
-used fields:
-inputWires : Array of Array , not sure why, contains only the inputIdNodes [[idNode ]]
-
-how to access node id:
+Now a function can have more than one input. The inside code is called only if all the inputs are defined.
+In this case, the function is called using:
 ```
-var arrayLength = this.inputWires.length;
-var inputIndex=-1;
-for (var i = 0; i < arrayLength; i++) {
-    if( this.inputWires[i][0]==msg.idSender ){
-      inputIndex = i;
-    }
-}
+msg.load = { functionInput1: xxxx, functionInput2: xxxx, functionInput3: xxxx  }
+``` 
+
+To reset" the inputs msg we have a special node called :" syncMultiInputs"
+
+
+Flows:    
+
+![](images/flow1.png "")
+
+f1=f2=
+```
+var date = new Date(msg.payload);
+msg.payload = date.toString();
+return msg;
 ```
 
-
-full node ( missing activeNodes ):
-```
-:{"id":"aee3c5b8.511c38","type":"function","z":"99bba521.664458","_closeCallbacks":[null],"inputWires":[["88b73430.7748c8"]],"wires":[["d6bc2096.2943e"]],"_wireCount":1,"_wire":"d6bc2096.2943e","name":"","func":"var date = new Date(msg.payload);\n// Change the payload to be a formatted Date string\nmsg.payload = date.toString();\n// Return the message so it can be sent on\nreturn msg;","outstandingTimers":[],"outstandingIntervals":[],"script":{},"_events":{}}
-
-```
+if you click on both timestamp you will see in the debug view:  
+{ "f1": "Thu May 12 2016 14:35:57 GMT-0300 (ART)", "f2": "Thu May 12 2016 14:35:57 GMT-0300 (ART)" }
 
 
+- - -
 
+
+### Build / Run
 
 If you want to run the latest code from git, here's how to get started:
 
@@ -64,9 +51,7 @@ If you want to run the latest code from git, here's how to get started:
 5. Run
 
         node red.js
-
-
-
+        
 ## Authors Node-RED
 
 Node-RED is a creation of [IBM Emerging Technology](http://ibm.com/blogs/et).
