@@ -439,10 +439,16 @@ RED.nodes = (function() {
                 node.inputWires.push([]);
             }
             var inputwires = links.filter(function(d){return d.target === n;});//.sort(function(a, b){return a.targetPort-b.targetPort});
+
             for (var j=0;j<inputwires.length;j++) {
               console.log(" inputeswires:"+ inputwires[j].targetPort);
               var w = inputwires[j];
-              node.inputWires[w.targetPort].push( w.source.id );
+              console.log( "n.inputs:"+JSON.stringify( n.inputs ))
+              if( node.inputWires[w.targetPort] )
+                node.inputWires[w.targetPort].push( w.source.id );
+              else{
+                console.log( "incomplete node:"+ JSON.stringify(node))
+              }
 
             }
 
