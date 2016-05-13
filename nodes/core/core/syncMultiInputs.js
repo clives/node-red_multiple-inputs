@@ -4,18 +4,23 @@ module.exports = function(RED) {
         var node = this;
         this.on('input', function(msg) {
 
-          console.log(" About to restet all inputValues" );
+          console.log(" About to restet all inputValues, nbr nodes:"+node.activeNodes );
 
+          var p=node.activeNodes
+          for (var key in p) {
+            if (p.hasOwnProperty(key)) {
+              var currentnode = p[key]
 
-           for (var i = 0; i <  node.activeNodes.length; i++) {
-              var currentnode = node.activeNodes[i] ;
+              if(  currentnode.inputValues ){
+                 for( var j =0; j < currentnode.inputValues.length; j++){
+                   currentnode.inputValues[j]=undefined;
 
-             for( var j =0; j < currentnode.inputValues.length; j++){
-               currentnode.inputValues[j]=undefined;
-
-             }
-
+                 }
+              }
+            }
           }
+
+
 
 
           node.send(msg);
