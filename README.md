@@ -41,7 +41,7 @@ If you want to run the latest code from git, here's how to get started:
 
 2. Clone the code:
 
-        git clone https://github.com/node-red/node-red.git
+        git clone https://github.com/clives/node-red_multiple-inputs.git
         cd node-red
 
 3. Install the node-red dependencies
