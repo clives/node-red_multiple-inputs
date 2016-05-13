@@ -9,7 +9,7 @@ msg.load = { functionInput1: xxxx, functionInput2: xxxx, functionInput3: xxxx  }
 To reset" the inputs msg we have a special node called :" syncMultiInputs"
 
 
-Flows:    
+###Simple Flow:    
 
 ![](images/flow1.png "")
 
@@ -23,7 +23,11 @@ return msg;
 if you click on both timestamp you will see in the debug view:  
 { "f1": "Thu May 12 2016 14:35:57 GMT-0300 (ART)", "f2": "Thu May 12 2016 14:35:57 GMT-0300 (ART)" }
 
+###Flow with syn node:
 
+![](images/flow2.png "")
+
+In this flow, if you click on timestamp Sync... you will have to "execute" amboth function (f1,f2) to show again the debug msg.
 - - -
 
 
