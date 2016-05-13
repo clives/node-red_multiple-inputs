@@ -246,7 +246,7 @@ Node.prototype.receive = function(msg) {
           }
           console.log("new input from wires nbr:"+inputIndex);
 
-          this.inputValues[ inputIndex ] = msg;
+          this.inputValues[ inputIndex ] = msg.payload;
 
 
           console.log("current msg:"+ JSON.stringify( msg ))
@@ -272,7 +272,7 @@ Node.prototype.receive = function(msg) {
                 console.log(" Input node type:"+this.activeNodes[ this.inputWires[i][0]].type)
                 console.log(" Input node name:"+this.activeNodes[ this.inputWires[i][0]].name)
 
-                newMsg.payload[this.activeNodes[ this.inputWires[i][0]].name ] =  msg.payload
+                newMsg.payload[this.activeNodes[ this.inputWires[i][0]].name ] =  this.inputValues[ i ]
               }
           }
 
